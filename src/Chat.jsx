@@ -10,7 +10,7 @@ import AddContactModal from "./components/AddContactModal";
 // 🔔 STEP 2: Import Sound
 import notificationSound from "./assets/notification.mp3";
 
-const socket = io("http://localhost:5000", {
+const socket = io(process.env.REACT_APP_API_URL, {
   auth: {
     token: localStorage.getItem("token")
   }
@@ -41,7 +41,7 @@ function Chat({ user, setUser }) {
   const fetchContacts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/contacts", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/contacts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setContacts(res.data);
@@ -53,7 +53,7 @@ function Chat({ user, setUser }) {
   const fetchConversations = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/conversations", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/conversations`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setConversations(res.data);
@@ -127,7 +127,7 @@ function Chat({ user, setUser }) {
     const token = localStorage.getItem("token");
 
     const res = await axios.post(
-      "http://localhost:5000/api/conversations",
+      `${process.env.REACT_APP_API_URL}/api/conversations`,
       { receiverId: selectedId },
       {
         headers: { Authorization: `Bearer ${token}` }
@@ -137,7 +137,7 @@ function Chat({ user, setUser }) {
     setConversation(res.data);
 
     const msgRes = await axios.get(
-      `http://localhost:5000/api/messages/${selectedId}`,
+      `${process.env.REACT_APP_API_URL}/api/messages/${selectedId}`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -207,7 +207,7 @@ function Chat({ user, setUser }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/chat-upload",
+        `${process.env.REACT_APP_API_URL}/api/chat-upload`,
         formData,
         {
           headers: { 
@@ -252,6 +252,25 @@ function Chat({ user, setUser }) {
     }
     
     e.target.value = null;
+  };
+
+  // 🔥 THE FIX: Bulletproof function to force the browser to download!
+  const forceDownload = async (e, fileUrl, fileName) => {
+    e.stopPropagation(); 
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/uploads/${fileUrl}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName || fileUrl); 
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
 
   return (
@@ -327,7 +346,7 @@ function Chat({ user, setUser }) {
                         <div style={{ position: "relative", flexShrink: 0 }}>
                           {otherUser.profileImage ? (
                             <img
-                              src={`http://localhost:5000/uploads/${otherUser.profileImage}`}
+                              src={`${process.env.REACT_APP_API_URL}/uploads/${otherUser.profileImage}`}
                               className="sidebar-avatar-img"
                               alt="dp"
                             />
@@ -435,7 +454,7 @@ function Chat({ user, setUser }) {
 
                                 const token = localStorage.getItem("token");
                                 await axios.delete(
-                                  `http://localhost:5000/api/contacts/${otherUser._id}`,
+                                  `${process.env.REACT_APP_API_URL}/api/contacts/${otherUser._id}`,
                                   { headers: { Authorization: `Bearer ${token}` } }
                                 );
 
@@ -471,7 +490,7 @@ function Chat({ user, setUser }) {
 
                                 const token = localStorage.getItem("token");
                                 await axios.post(
-                                  `http://localhost:5000/api/contacts/block/${otherUser._id}`,
+                                  `${process.env.REACT_APP_API_URL}/api/contacts/block/${otherUser._id}`,
                                   {},
                                   { headers: { Authorization: `Bearer ${token}` } }
                                 );
@@ -509,7 +528,7 @@ function Chat({ user, setUser }) {
                                 const token = localStorage.getItem("token");
                                 try {
                                   await axios.delete(
-                                    `http://localhost:5000/api/conversations/${otherUser._id}`,
+                                    `${process.env.REACT_APP_API_URL}/api/conversations/${otherUser._id}`,
                                     { headers: { Authorization: `Bearer ${token}` } }
                                   );
                                   
@@ -547,7 +566,7 @@ function Chat({ user, setUser }) {
                 {/* AVATAR DISPLAY LOGIC HERE */}
                 {user?.profileImage ? (
                   <img
-                    src={`http://localhost:5000/uploads/${user.profileImage}`}
+                    src={`${process.env.REACT_APP_API_URL}/uploads/${user.profileImage}`}
                     className="sidebar-avatar-img"
                     alt="dp"
                   />
@@ -587,7 +606,7 @@ function Chat({ user, setUser }) {
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     {activeContact?.profileImage ? (
                       <img
-                        src={`http://localhost:5000/uploads/${activeContact.profileImage}`}
+                        src={`${process.env.REACT_APP_API_URL}/uploads/${activeContact.profileImage}`}
                         className="sidebar-avatar-img"
                         alt="dp"
                       />
@@ -626,7 +645,7 @@ function Chat({ user, setUser }) {
                       {msg.messageType === "image" && (
                         <div className="image-wrapper" style={{ position: "relative", display: "inline-block" }}>
                           <img
-                            src={`http://localhost:5000/uploads/${msg.fileUrl}`}
+                            src={`${process.env.REACT_APP_API_URL}/uploads/${msg.fileUrl}`}
                             className="chat-image"
                             alt="img"
                             onClick={() => setPreviewImage(msg.fileUrl)}
@@ -634,10 +653,8 @@ function Chat({ user, setUser }) {
                           
                           {/* Render Download button ONLY if the user received the image */}
                           {msg.sender !== user?._id && (
-                            <a
-                              // 🔥 FIXED: Point to the backend /api/download route!
-                              href={`http://localhost:5000/api/download/${msg.fileUrl}`}
-                              onClick={(e) => e.stopPropagation()} 
+                            <button
+                              onClick={(e) => forceDownload(e, msg.fileUrl, msg.fileName)} 
                               style={{
                                 position: "absolute",
                                 bottom: "12px",
@@ -655,19 +672,20 @@ function Chat({ user, setUser }) {
                               title="Download Image"
                             >
                               ⬇️
-                            </a>
+                            </button>
                           )}
                         </div>
                       )}
 
                       {msg.messageType === "file" && (
                         <div className="file-bubble">
-                          <a
-                            href={`http://localhost:5000/api/download/${msg.fileUrl}`}
-                            style={{ color: "#60a5fa" }}
+                          <span
+                            onClick={(e) => forceDownload(e, msg.fileUrl, msg.fileName)}
+                            style={{ color: "#60a5fa", cursor: "pointer", textDecoration: "underline" }}
+                            title="Download File"
                           >
                             📄 {msg.fileName}
-                          </a>
+                          </span>
                         </div>
                       )}
                     </div>
@@ -717,7 +735,7 @@ function Chat({ user, setUser }) {
       {previewImage && (
         <div className="image-modal" onClick={() => setPreviewImage(null)}>
           <img
-            src={`http://localhost:5000/uploads/${previewImage}`}
+            src={`${process.env.REACT_APP_API_URL}/uploads/${previewImage}`}
             className="image-modal-content"
             alt="preview"
           />

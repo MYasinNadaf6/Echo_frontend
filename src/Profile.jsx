@@ -3,14 +3,12 @@ import "./styles/profile.css";
 import axios from "axios";
 
 function Profile({ user, setUser, goBack }) {
-  // NEW STATE: Track blocked users
   const [blockedUsers, setBlockedUsers] = useState([]);
 
-  // Fetch blocked users when the profile opens
   const fetchBlockedUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/contacts/blocked", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/contacts/blocked`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBlockedUsers(res.data);
@@ -39,7 +37,7 @@ function Profile({ user, setUser, goBack }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/upload/profile-image",
+        `${process.env.REACT_APP_API_URL}/api/upload/profile-image`,
         formData,
         {
           headers: {
@@ -48,7 +46,6 @@ function Profile({ user, setUser, goBack }) {
         }
       );
 
-      // 🔥 Update user state instead of reloading
       setUser((prev) => ({
         ...prev,
         profileImage: res.data.image
@@ -74,7 +71,7 @@ function Profile({ user, setUser, goBack }) {
         <div className="profile-avatar">
           {user?.profileImage ? (
             <img
-              src={`http://localhost:5000/uploads/${user.profileImage}`}
+              src={`${process.env.REACT_APP_API_URL}/uploads/${user.profileImage}`}
               alt="profile"
               className="avatar-image"
             />
@@ -111,7 +108,6 @@ function Profile({ user, setUser, goBack }) {
           <p><strong>Status:</strong> Active</p>
         </div>
 
-        {/* 🔥 NEW BLOCKED USERS SECTION */}
         <div className="profile-section" style={{ marginTop: "20px" }}>
           <h4>Blocked Users</h4>
           {blockedUsers.length === 0 ? (
@@ -146,7 +142,7 @@ function Profile({ user, setUser, goBack }) {
                     try {
                       const token = localStorage.getItem("token");
                       await axios.post(
-                        `http://localhost:5000/api/contacts/unblock/${blockedUser._id}`,
+                        `${process.env.REACT_APP_API_URL}/api/contacts/unblock/${blockedUser._id}`,
                         {},
                         { headers: { Authorization: `Bearer ${token}` } }
                       );

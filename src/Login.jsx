@@ -15,7 +15,7 @@ function Login({ setUser, setAuthView }) {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
         { email, password }
       );
 
@@ -75,14 +75,14 @@ function Login({ setUser, setAuthView }) {
         </form>
 
         <div className="auth-footer">
-  Don’t have an account?{" "}
-  <span
-    style={{ color: "#3b82f6", cursor: "pointer" }}
-    onClick={() => setAuthView("register")}
-  >
-    Register
-  </span>
-</div>
+          Don’t have an account?{" "}
+          <span
+            style={{ color: "#3b82f6", cursor: "pointer" }}
+            onClick={() => setAuthView("register")}
+          >
+            Register
+          </span>
+        </div>
       </div>
     </div>
   );

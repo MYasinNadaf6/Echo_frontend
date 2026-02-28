@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios"; // Make sure to import axios!
+import axios from "axios";
 import Login from "./Login";
 import Register from "./Register";
 import Chat from "./Chat";
@@ -14,7 +14,7 @@ function App() {
 
     if (!token) return;
 
-    axios.get("http://localhost:5000/api/auth/me", {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
@@ -27,16 +27,14 @@ function App() {
 
   }, []);
 
-  // Inside your App.js render:
-if (!user) {
-  return authView === "login" ? (
-    // 🔥 Make sure it says setAuthView={setAuthView} here!
-    <Login setUser={setUser} setAuthView={setAuthView} />
-  ) : (
-    // 🔥 And here!
-    <Register setAuthView={setAuthView} />
-  );
-}
+  if (!user) {
+    return authView === "login" ? (
+      <Login setUser={setUser} setAuthView={setAuthView} />
+    ) : (
+      <Register setAuthView={setAuthView} />
+    );
+  }
+
   // PASSED setUser HERE so Profile.js can use it!
   return <Chat user={user} setUser={setUser} />;
 }

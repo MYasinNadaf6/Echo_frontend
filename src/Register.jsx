@@ -28,7 +28,7 @@ function Register({ setAuthView }) {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
         name: form.name,
         email: form.email,
         phone: form.phone,
@@ -107,14 +107,14 @@ function Register({ setAuthView }) {
         </form>
 
         <div className="auth-footer">
-  Already have an account?{" "}
-  <span
-    style={{ color: "#3b82f6", cursor: "pointer" }}
-    onClick={() => setAuthView("login")}
-  >
-    Login
-  </span>
-</div>
+          Already have an account?{" "}
+          <span
+            style={{ color: "#3b82f6", cursor: "pointer" }}
+            onClick={() => setAuthView("login")}
+          >
+            Login
+          </span>
+        </div>
       </div>
     </div>
   );
