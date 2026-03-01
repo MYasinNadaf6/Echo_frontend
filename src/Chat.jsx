@@ -260,7 +260,7 @@ function Chat({ user, setUser }) {
   const forceDownload = async (e, fileUrl, fileName) => {
     e.stopPropagation(); 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/uploads/${fileUrl}`);
+      const response = await fetch(fileUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -347,7 +347,7 @@ function Chat({ user, setUser }) {
                         <div style={{ position: "relative", flexShrink: 0 }}>
                           {otherUser.profileImage ? (
                             <img
-                              src={`${process.env.REACT_APP_API_URL}/uploads/${otherUser.profileImage}`}
+                              src={otherUser.profileImage}
                               className="sidebar-avatar-img"
                               alt="dp"
                             />
@@ -567,7 +567,7 @@ function Chat({ user, setUser }) {
                 {/* AVATAR DISPLAY LOGIC HERE */}
                 {user?.profileImage ? (
                   <img
-                    src={`${process.env.REACT_APP_API_URL}/uploads/${user.profileImage}`}
+                    src={user.profileImage}
                     className="sidebar-avatar-img"
                     alt="dp"
                   />
@@ -613,7 +613,7 @@ function Chat({ user, setUser }) {
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     {activeContact?.profileImage ? (
                       <img
-                        src={`${process.env.REACT_APP_API_URL}/uploads/${activeContact.profileImage}`}
+                        src={activeContact.profileImage}
                         className="sidebar-avatar-img"
                         alt="dp"
                       />
@@ -652,7 +652,7 @@ function Chat({ user, setUser }) {
                       {msg.messageType === "image" && (
                         <div className="image-wrapper" style={{ position: "relative", display: "inline-block" }}>
                           <img
-                            src={`${process.env.REACT_APP_API_URL}/uploads/${msg.fileUrl}`}
+                            src={msg.fileUrl}
                             className="chat-image"
                             alt="img"
                             onClick={() => setPreviewImage(msg.fileUrl)}
@@ -742,7 +742,7 @@ function Chat({ user, setUser }) {
       {previewImage && (
         <div className="image-modal" onClick={() => setPreviewImage(null)}>
           <img
-            src={`${process.env.REACT_APP_API_URL}/uploads/${previewImage}`}
+            src={previewImage}
             className="image-modal-content"
             alt="preview"
           />

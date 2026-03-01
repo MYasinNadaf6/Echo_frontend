@@ -71,7 +71,7 @@ function Profile({ user, setUser, goBack }) {
         <div className="profile-avatar">
           {user?.profileImage ? (
             <img
-              src={`${process.env.REACT_APP_API_URL}/uploads/${user.profileImage}`}
+              src={user.profileImage}
               alt="profile"
               className="avatar-image"
             />
