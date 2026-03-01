@@ -11,7 +11,7 @@ function AddContactModal({ closeModal, refreshContacts }) {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/contacts/add",
+        "${process.env.REACT_APP_API_URL}",
         { phone },
         {
           headers: { Authorization: `Bearer ${token}` }
