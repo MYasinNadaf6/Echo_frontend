@@ -1,25 +1,33 @@
-.sidebar {
-  width: 300px;
-  background-color: #1e1e2f;
-  color: white;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
-.sidebar-avatar-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.chat-area {
-  flex: 1;
+/* =========================================
+   CHAT HEADER
+========================================= */
+.chat-header {
+  height: 60px;
+  padding: 0 20px;
+  background-color: #111827;
   display: flex;
-  flex-direction: column;
-  background-color: #0f172a;   /* Dark background */
-  position: relative; /* Added to keep the upload bar positioned correctly */
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1f2937;
 }
 
+.exit-chat-btn {
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.exit-chat-btn:hover {
+  background: #430101;
+}
+
+/* =========================================
+   MESSAGES CONTAINER & BUBBLES
+========================================= */
 .messages {
   flex: 1;
   padding: 20px;
@@ -40,39 +48,36 @@
   background-color: #2563eb;
   color: white;
   align-self: flex-end;
+  border-bottom-right-radius: 4px; /* Gives a nice chat tail effect */
 }
 
 .received {
   background-color: #1f2937;
   color: white;
   align-self: flex-start;
+  border-bottom-left-radius: 4px;
 }
 
+/* =========================================
+   INPUT AREA
+========================================= */
 .message-input {
   display: flex;
   padding: 15px;
   background-color: #111827;
   border-top: 1px solid #1f2937;
 }
-.unread-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: #10b981;
-  color: white;
-  font-size: 12px;
-  padding: 3px 6px;
-  border-radius: 50%;
-}
+
 .message-input input {
   flex: 1;
-  padding: 10px;
+  padding: 10px 15px;
   border: 1px solid #374151;
   border-radius: 20px;
   background-color: #1f2937;
   color: white;
   outline: none;
 }
+
 .message-input button {
   margin-left: 10px;
   padding: 10px 20px;
@@ -81,46 +86,40 @@
   color: white;
   border-radius: 20px;
   cursor: pointer;
+  transition: background 0.2s;
 }
-.chat-header {
-  height: 60px;
-  padding: 0 20px;
-  background-color: #111827;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #1f2937;
+
+.message-input button:hover {
+  background-color: #3b82f6;
 }
-.exit-chat-btn {
-  background: #ef4444;
-  border: none;
+
+/* =========================================
+   UPLOADS, BADGES & MEDIA
+========================================= */
+.upload-bar {
+  position: absolute;
+  bottom: 80px; 
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2563eb;
   color: white;
   padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.exit-chat-btn:hover {
-  background: #430101;
-}
-
-/* 🔥 NEW STYLES ADDED BELOW */
-
-/* 1. Resize Image Bubble */
-.chat-image {
-  max-width: 250px;
-  max-height: 300px;
-  border-radius: 12px;
-  cursor: pointer;
-  object-fit: cover;
+  border-radius: 20px;
+  z-index: 10;
 }
 
 .image-wrapper {
   padding: 5px;
 }
 
-/* 2. Image Modal */
+.chat-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  cursor: pointer;
+  object-fit: cover;
+}
+
 .image-modal {
   position: fixed;
   inset: 0;
@@ -137,30 +136,33 @@
   border-radius: 10px;
 }
 
-/* 3. Upload Progress Bar */
-.upload-bar {
-  position: absolute;
-  bottom: 80px; /* Adjusted slightly so it doesn't overlap the input box */
-  left: 50%;
-  transform: translateX(-50%);
-  background: #2563eb;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  z-index: 10;
-}
-
-/* 4. File Bubble */
 .file-bubble {
-  background: #1f2937;
+  background: rgba(0,0,0,0.2);
   padding: 10px;
   border-radius: 12px;
 }
 
-.file-bubble a {
-  text-decoration: none;
-}
+/* =========================================
+   MOBILE TWEAKS (Chat Specific)
+========================================= */
+@media screen and (max-width: 768px) {
+  .message-input {
+    padding: 10px;
+  }
+  
+  .message-input input {
+    font-size: 16px; /* Prevents iPhones from zooming in automatically */
+  }
 
-.file-bubble a:hover {
-  text-decoration: underline;
+  .chat-image {
+    max-width: 200px; 
+  }
+}
+@media screen and (max-width: 768px) {
+  .message {
+    max-width: 85%; /* Gives chat bubbles more room on mobile */
+  }
+  .mobile-back-btn {
+    display: block; /* Show only on phones */
+  }
 }
