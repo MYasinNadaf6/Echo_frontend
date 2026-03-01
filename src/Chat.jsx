@@ -299,8 +299,7 @@ function Chat({ user, setUser }) {
       ) : (
         <div className="main-content">
           {/* Sidebar */}
-          <div className="sidebar">
-            <div className="sidebar-header">
+<div className={`sidebar ${activeContact ? "mobile-hidden" : ""}`}>            <div className="sidebar-header">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3>Messages</h3>
                 <button 
@@ -588,8 +587,7 @@ function Chat({ user, setUser }) {
           </div>
 
           {/* Chat Area */}
-          <div className="chat-area">
-            {!activeContact ? (
+<div className={`chat-area ${!activeContact ? "mobile-hidden" : ""}`}>            {!activeContact ? (
               <div style={{
   flex: 1,
   display: "flex",
