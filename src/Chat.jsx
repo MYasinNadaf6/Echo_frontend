@@ -8,6 +8,8 @@ import Profile from "./Profile";
 import AddContactModal from "./components/AddContactModal";
 
 // 🔔 STEP 2: Import Sound
+// 🔔 Import your logo (make sure the filename matches what you put in the assets folder!)
+import logo from "./assets/logo.png";
 import notificationSound from "./assets/notification.mp3";
 
 const socket = io(process.env.REACT_APP_API_URL, {
@@ -278,12 +280,11 @@ function Chat({ user, setUser }) {
       {/* Navbar */}
       <div className="navbar">
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div style={{
-            width: "35px",
-            height: "35px",
-            background: "#3b82f6",
-            borderRadius: "8px"
-          }}></div>
+         <img 
+  src={logo} 
+  alt="Echo Logo" 
+  style={{ width: "35px", height: "35px", borderRadius: "8px", objectFit: "cover" }} 
+/>
           <h3>Echo</h3>
         </div>
       </div>
@@ -590,15 +591,21 @@ function Chat({ user, setUser }) {
           <div className="chat-area">
             {!activeContact ? (
               <div style={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column"
-              }}>
-                <h2>Welcome to Echo!</h2>
-                <p>Select a conversation from the sidebar to start chatting</p>
-              </div>
+  flex: 1,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column"
+}}>
+  {/* 🔥 Logo added to welcome screen */}
+  <img 
+    src={logo} 
+    alt="Echo Logo" 
+    style={{ width: "120px", height: "120px", borderRadius: "25px", marginBottom: "20px", objectFit: "cover", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }} 
+  />
+  <h2>Welcome to Echo!</h2>
+  <p style={{ color: "#9ca3af" }}>Select a conversation from the sidebar to start chatting</p>
+</div>
             ) : (
               <>
                 {/* Chat Header */}
