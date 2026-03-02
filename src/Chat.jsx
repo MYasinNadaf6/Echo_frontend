@@ -596,10 +596,10 @@ function Chat({ user, setUser }) {
   flexDirection: "column"
 }}>
   {/* 🔥 Logo added to welcome screen */}
-  <img 
+  <img className="rotate"
     src={logo} 
     alt="Echo Logo" 
-    style={{ width: "120px", height: "120px", borderRadius: "25px", marginBottom: "20px", objectFit: "cover", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }} 
+    style={{ width: "120px", height: "120px", borderRadius: "25px", marginBottom: "20px", objectFit: "cover" }} 
   />
   <h2>Welcome to Echo!</h2>
   <p style={{ color: "#9ca3af" }}>Select a conversation from the sidebar to start chatting</p>
