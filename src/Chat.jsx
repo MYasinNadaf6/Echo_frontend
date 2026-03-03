@@ -601,7 +601,7 @@ function Chat({ user, setUser }) {
     alt="Echo Logo" 
     style={{ width: "120px", height: "120px", borderRadius: "25px", marginBottom: "20px", objectFit: "cover" }} 
   />
-  <h2>Welcome to Echo!</h2>
+  <h2>Echo!</h2>
   <p style={{ color: "#9ca3af" }}>Select a conversation from the sidebar to start </p>
 </div>
             ) : (
