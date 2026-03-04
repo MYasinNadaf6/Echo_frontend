@@ -6,7 +6,7 @@ import "./styles/layout.css";
 import "./chat.css";
 import Profile from "./Profile";
 import AddContactModal from "./components/AddContactModal";
-
+import { requestForToken, onMessageListener } from "./firebase";import { requestForToken, onMessageListener } from "./firebase";
 // 🔔 STEP 2: Import Sound
 // 🔔 Import your logo (make sure the filename matches what you put in the assets folder!)
 import logo from "./assets/logo.png";
@@ -113,7 +113,24 @@ function Chat({ user, setUser }) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+// 🔥 Trigger Push Notification Permission
+  useEffect(() => {
+    if (user) {
+      requestForToken().then((token) => {
+        if (token) {
+          // This proves it works! It will log the unique token for this specific device.
+          console.log("Got the token successfully!", token); 
+        }
+      });
+    }
 
+    // Listen for foreground notifications (when app is open)
+    onMessageListener()
+      .then((payload) => {
+        console.log("Received foreground message:", payload);
+      })
+      .catch((err) => console.log("Failed to listen for messages:", err));
+  }, [user]);
   useEffect(() => {
     const handleClickOutside = () => setActiveMenuId(null);
     window.addEventListener("click", handleClickOutside);
@@ -278,7 +295,8 @@ function Chat({ user, setUser }) {
   return (
     <div className="app-container">
       {/* Navbar */}
-      <div className="navbar">
+     {/* 🔥 Navbar also hides on mobile if a contact is selected */}
+<div className={`navbar ${activeContact ? "mobile-hidden" : ""}`}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
          <img 
   src={logo} 
