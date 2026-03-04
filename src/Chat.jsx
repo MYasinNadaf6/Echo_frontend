@@ -6,7 +6,7 @@ import "./styles/layout.css";
 import "./chat.css";
 import Profile from "./Profile";
 import AddContactModal from "./components/AddContactModal";
-import { requestForToken, onMessageListener } from "./firebase";import { requestForToken, onMessageListener } from "./firebase";
+import { requestForToken, onMessageListener } from "./firebase";
 // 🔔 STEP 2: Import Sound
 // 🔔 Import your logo (make sure the filename matches what you put in the assets folder!)
 import logo from "./assets/logo.png";
