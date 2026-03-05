@@ -114,12 +114,26 @@ function Chat({ user, setUser }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 // 🔥 Trigger Push Notification Permission
+  // 🔥 Trigger Push Notification Permission & Save to DB
   useEffect(() => {
     if (user) {
-      requestForToken().then((token) => {
+      requestForToken().then(async (token) => {
         if (token) {
-          // This proves it works! It will log the unique token for this specific device.
           console.log("Got the token successfully!", token); 
+          
+          // 🔥 NEW: Send the token to MongoDB
+          try {
+            const authToken = localStorage.getItem("token");
+            await axios.post(
+              `${process.env.REACT_APP_API_URL}/api/auth/save-token`, // Make sure this matches the route file you used in Step 3!
+              { token: token },
+              { headers: { Authorization: `Bearer ${authToken}` } }
+            );
+            console.log("Token saved to database!");
+          } catch (err) {
+            console.error("Failed to save token to DB", err);
+          }
+          
         }
       });
     }
