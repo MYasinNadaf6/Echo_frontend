@@ -87,5 +87,21 @@ function Login({ setUser, setAuthView }) {
     </div>
   );
 }
-
+<a 
+  href="/EchoChat.apk" 
+  download="EchoChat.apk" 
+  className="btn-download"
+  style={{
+    display: "inline-block",
+    padding: "10px 20px",
+    backgroundColor: "#007bff", // Feel free to change this to match your Echo theme!
+    color: "white",
+    textDecoration: "none",
+    borderRadius: "5px",
+    marginTop: "15px",
+    fontWeight: "bold"
+  }}
+>
+  📱 Download Android App
+</a>
 export default Login;
