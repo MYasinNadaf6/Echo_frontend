@@ -3,7 +3,8 @@ import axios from "axios";
 import Login from "./Login";
 import Register from "./Register";
 import Chat from "./Chat";
-
+import { useEffect } from 'react';
+import { App as CapacitorApp } from '@capacitor/app';
 function App() {
   const [user, setUser] = useState(null);
   const [authView, setAuthView] = useState("login");
@@ -26,6 +27,15 @@ function App() {
     });
 
   }, []);
+  useEffect(() => {
+  CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+    if (canGoBack) {
+      window.history.back(); // Tells React to go back one page
+    } else {
+      CapacitorApp.exitApp(); // Closes the app if you are on the home screen
+    }
+  });
+}, []);
 
   if (!user) {
     return authView === "login" ? (

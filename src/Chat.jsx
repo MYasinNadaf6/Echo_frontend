@@ -7,17 +7,18 @@ import "./chat.css";
 import Profile from "./Profile";
 import AddContactModal from "./components/AddContactModal";
 import { requestForToken, onMessageListener } from "./firebase";
+import { App as CapacitorApp } from '@capacitor/app';
 // 🔔 STEP 2: Import Sound
 // 🔔 Import your logo (make sure the filename matches what you put in the assets folder!)
 import logo from "./assets/logo.png";
 import notificationSound from "./assets/notification.mp3";
 
-const socket = io(process.env.REACT_APP_API_URL, {
+// 🔥 Replace the process.env line with your exact Render URL
+const socket = io("https://echo-backend-aa35.onrender.com", {
   auth: {
     token: localStorage.getItem("token")
   }
 });
-
 function Chat({ user, setUser }) {
   const [view, setView] = useState("chat");
   const [conversation, setConversation] = useState(null);
@@ -63,7 +64,31 @@ function Chat({ user, setUser }) {
       console.log(err);
     }
   };
+// 🔥 CAPACITOR NATIVE BACK BUTTON FIX
+  useEffect(() => {
+    const handleBackButton = () => {
+      // If the user is on the profile screen, go back to chat
+      if (view === "profile") {
+        setView("chat");
+      } 
+      // If the user has a chat open, close the chat and go to the contact list
+      else if (activeContact) {
+        setActiveContact(null);
+        setConversation(null);
+      } 
+      // If they are on the main contact list, close the app natively
+      else {
+        CapacitorApp.exitApp();
+      }
+    };
 
+    CapacitorApp.addListener('backButton', handleBackButton);
+
+    // Cleanup the listener when the component unmounts
+    return () => {
+      CapacitorApp.removeAllListeners();
+    };
+  }, [view, activeContact]);
   useEffect(() => {
     fetchContacts();
     fetchConversations();
