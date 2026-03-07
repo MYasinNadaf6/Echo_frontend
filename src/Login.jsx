@@ -82,14 +82,9 @@ function Login({ setUser, setAuthView }) {
           >
             Register
           </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-<a 
-  href="/EchoChat.apk" 
-  download="EchoChat.apk" 
+          <a 
+  href="/Echo.apk" 
+  download="Echo.apk" 
   className="btn-download"
   style={{
     display: "inline-block",
@@ -104,4 +99,10 @@ function Login({ setUser, setAuthView }) {
 >
   📱 Download Android App
 </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default Login;
