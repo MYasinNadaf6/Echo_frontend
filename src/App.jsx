@@ -3,7 +3,7 @@ import axios from "axios";
 import Login from "./Login";
 import Register from "./Register";
 import Chat from "./Chat";
-import { useEffect } from 'react';
+
 import { App as CapacitorApp } from '@capacitor/app';
 function App() {
   const [user, setUser] = useState(null);
